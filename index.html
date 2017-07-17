@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.26/vue.min.js"></script>
+  <script src="main.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body onload="initial();">
+
+  <h1>Vue.js</h1>
+  <div id="msg">
+    <h2>Vueオブジェクト</h2>
+    <p>{{ message }}</p>
+    <p>{{}}に値を割り当てる</p>
+
+    <h2>HTML側からVueに値を設定する</h2>
+    <p>{{ message2 }}</p>
+    <input type="text" v-model="message2">
+    <p>v-modelはViwe Modelに保存された値をコントロールに設定する</p>
+
+
+    <h2>イベントとメソッドの利用</h2>
+    <p>{{ message3 }}</p>
+    <input type="text" v-model="text1">
+    <input type="button" v-on:click="doAction" value="click">
+    <p>v-onは、イベントを割り当てるために使う。v-on:clickはclickイベントに割り当てるために使う。</p>
+
+    <h2>HTMLの表示</h2>
+    <p>{{{ message4 }}}</p>
+    <input type="text" v-model="text2">
+    <input type="button" v-on:click="doAction2" value="click">
+    <p>HTMLを表示する場合は、{{{}}}(3つ重ねる)とするとエスケープ処理せずに出力される</p>
+
+    <h2>javascript式を使う</h2>
+    <p>{{{ message5 }}}</p>
+    <input type="text" v-model="text3">
+    <input type="button" v-on:click="doAction3" value="click">
+    <p>配列にpushしたテキストをHTMLに表示する</p>
+    <p>createdはVueオブジェクトが生成された直後に実行される処理初期化処理をするのに役立つ</p>
+
+    <h2>フィルターを使う</h2>
+    <p>{{{ message6 | json }}}</p>
+    <input type="text" v-model="text4">
+    <input type="button" v-on:click="doAction4" value="click">
+    <p>フィルターを指定することで指定した形で出力することができる。複数指定もできる</p>
+  </div>
+
+
+  <div id="msg2">
+    <h2>computedプロパティ（算出プロパティ）</h2>
+    <p>{{ result }}</p>
+    <input type="text" v-model="number">
+    <p>computedプロパティはメソッドを使って演算した結果を値として取り出す</p>
+
+    <h2>Get/Setの作成</h2>
+    <p>税込価格：<input type="text" v-model="woTax"></p>
+    <p>税抜価格：<input type="text" v-model="wTax"></p>
+    <p>それぞれに値の取得と値変更のための処理を記述しておく</p>
+
+    <h2>スタイルクラスのバインド</h2>
+    <p v-bind:class="{'a':isA, 'b':isB}" v-on:click="change();">クラスを操作します。</p>
+    <p>v-bind:classは、class属性をバインドするのに利用する。真偽値で判断する</p>
+
+    <h2>スタイルの変更</h2>
+    <p v-bind:style="{'color':selF,'background':selB}">スタイルを操作します</p>
+    <p>
+      <select v-model="selF">
+        <option>white</option>
+        <option>black</option>
+        <option>red</option>
+        <option>blue</option>
+        <option>green</option>
+      </select>
+    </p>
+    <p>
+      <select v-model="selB">
+        <option>white</option>
+        <option>black</option>
+        <option>red</option>
+        <option>blue</option>
+        <option>green</option>
+      </select>
+    </p>
+    <p>v-bind:styleでstyle属性の値を操作できる</p>
+
+    <h2>条件付き表示「v-if」</h2>
+    <p v-if="flg">メッセージの表示を操作します。</p>
+    <p v-else>[※非表示です]</p>
+    <div>
+      <input type="checkbox" id="ck" v-model="flg">
+      <label for="ck">表示</label>
+    </div>
+    <p>v-ifはtrueなら表示、falseなら非表示にできる。v-elseを使えばfalseの場合の表示を設定できる</p>
+
+    <h2>繰り返す「v-for」</h2>
+    <ul>
+      <li v-for="obj in items">
+        {{ obj }}
+      </li>
+    </ul>
+    <p>v-forは配列などから値を取り出し変数に格納しタグを表示する</p>
+
+  <h2>ダイナミックにリスト表示する</h2>
+  <ol>
+    <li v-for="obj2 in items2">
+      {{ obj2 }}
+    </li>
+  </ol>
+  <div>
+    <select size="5" multiple v-model="items2">
+      <option>Windows</option>
+      <option>macOS</option>
+      <option>Linux</option>
+      <option>Android</option>
+      <option>iOS</option>
+    </select>
+  </div>
+  <p>リストを選択すると更新される。ダイナミックな更新が可能</p>
+
+  <h2>コンポーネントの作成と利用</h2>
+  <my-component></my-component>
+  <p>temlate内に設定した内容がコンポーネントタグに出力される</p>
+
+  <h2>propsによる値の受け渡し</h2>
+  <my-component2 message="こんにちは！"></my-component2>
+  <p>propsで設定した値がtemplate内で変数として利用できる</p>
+
+  <h2>テンプレートの利用</h2>
+  <template id="my-template">
+    <table>
+      <tr v-for="obj in items.split(',')">
+        <td style="border:1px solid #ccc;padding:0px 10px;">
+          {{ obj }}
+        </td>
+      </tr>
+    </table>
+  </template>
+
+  <my-component3 items="one,two,three"></my-component3>
+  <p>HTML内にtemplateタグを記述しておくことでコンポーネントのtemplateとして利用できる</p>
+  <p>コンポーネントのロジックと表示の分離ができる</p>
+
+  <h2>カスタムディレクティブ</h2>
+  <div v-my-directive="message">ok.</div>
+
+  <input type="text" v-model="val">
+  <input type="button" v-on:click="myfunc();" value="click">
+  <p>独自のコンポーネントを定義し独自のタグに記述して記述できる</p>
+
+
+
+  </div>
+
+</body>
+</html>
